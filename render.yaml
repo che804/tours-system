@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: tours-system
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn tours_project.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tours-db
+          property: connectionString
+
+databases:
+  - name: tours-db
+    plan: free
